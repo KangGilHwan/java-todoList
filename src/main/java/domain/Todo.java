@@ -1,24 +1,21 @@
 package domain;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Todo {
 
     private int id;
     private String todo;
-
-    private List<Todo> references;
+    private References references;
+    private Precedences precedences;
     private boolean done = false;
-
-    private List<Todo> precedences;
     private boolean completion = false;
 
     private Todo(int id, String todo, List<Todo> references) {
         this.id = id;
         this.todo = todo;
-        this.references = references;
-        this.precedences = new ArrayList<>();
+        this.references = new References(references);
+        this.precedences = new Precedences();
     }
 
     public void addPrecedence(Todo precedence) {
@@ -27,26 +24,26 @@ public class Todo {
 
     public void work() {
         done = true;
-        checkChild();
+        canBeCompleted();
     }
 
-    public void checkChild() {
-        if (isDone() && checkPrecedencesCompletion()) {
+    public void canBeCompleted() {
+        if (isDone() && checkCompletionPrecedences()) {
             complete();
         }
     }
 
-    public boolean checkPrecedencesCompletion() {
-        return precedences.stream().allMatch(p -> p.isCompletion());
+    public boolean checkCompletionPrecedences() {
+        return precedences.checkCompletion();
     }
 
     public void complete() {
         completion = true;
-        checkReferencesCompletion();
+        canBeCompletedReferences();
     }
 
-    public void checkReferencesCompletion() {
-        references.stream().forEach(r -> r.checkChild());
+    public void canBeCompletedReferences() {
+        references.canBeCompleted();
     }
 
     public boolean isDone() {
@@ -66,9 +63,9 @@ public class Todo {
         return "Todo{" +
                 "id=" + id +
                 ", todo='" + todo + '\'' +
-                ", references=" + references.size() +
+                ", references=" + references +
                 ", done=" + done +
-                ", precedences=" + precedences.size() +
+                ", precedences=" + precedences +
                 ", completion=" + completion +
                 '}';
     }

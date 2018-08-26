@@ -8,7 +8,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-public class TodoTest {
+public class TodoListTest {
 
     private TodoList todoList;
 
@@ -55,9 +55,7 @@ public class TodoTest {
 
         todoList.doWork(6);
         assertTrue(todoList.hasTodo(6).isCompletion());
-
         assertTrue(todoList.hasTodo(4).isCompletion());
-        System.out.println(todoList);
     }
 
     @Test
