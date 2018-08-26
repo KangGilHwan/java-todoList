@@ -26,13 +26,13 @@ public class TodoList {
         addPrecedence(todo, referencesId);
     }
 
-    public List<Todo> findReferences(Integer... referencesId) {
+    private List<Todo> findReferences(Integer... referencesId) {
         return Arrays.stream(referencesId)
                 .map(p -> hasTodo(p))
                 .collect(Collectors.toList());
     }
 
-    public void addPrecedence(Todo todo, Integer... referencesId){
+    private void addPrecedence(Todo todo, Integer... referencesId){
         Arrays.stream(referencesId)
                 .map(p -> hasTodo(p))
                 .forEach(p -> p.addPrecedence(todo));
